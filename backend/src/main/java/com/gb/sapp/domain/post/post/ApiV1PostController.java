@@ -2,6 +2,10 @@ package com.gb.sapp.domain.post.post;
 
 import com.gb.sapp.domain.post.post.entity.Post;
 import com.gb.sapp.domain.post.post.service.PostService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,5 +34,26 @@ public class ApiV1PostController {
             @PathVariable long id
     ) {
         postService.deleteById(id);
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class PostModifyItemReqBody {
+        @NotBlank
+        public String title;
+        @NotBlank
+        public String body;
+    }
+
+    @PutMapping("/{id}")
+    public Post modifyItem(
+            @PathVariable long id,
+            @RequestBody @Valid PostModifyItemReqBody reqBody
+    ) {
+        Post post = postService.findById(id).get();
+
+        postService.modify(post, reqBody.title, reqBody.body);
+
+        return post;
     }
 }

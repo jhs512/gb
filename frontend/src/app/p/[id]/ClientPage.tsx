@@ -1,6 +1,7 @@
 "use client";
 
 import { Post } from "@/app/types/Post";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";
@@ -35,6 +36,7 @@ export default function ClientPage({ id }: { id: string }) {
           <div>{post.body}</div>
           <button onClick={() => router.back()}>뒤로가기</button>
           <button onClick={deletePost}>삭제</button>
+          <Link href={`/p/${post.id}/edit`}>수정</Link>
         </div>
       )}
     </div>
