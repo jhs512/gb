@@ -1,5 +1,7 @@
 import ClientPage from "./ClientPage";
 
-export default function Page({ params: { id } }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = await params;
+
   return <ClientPage id={id} />;
 }
