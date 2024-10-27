@@ -56,4 +56,20 @@ public class ApiV1PostController {
 
         return post;
     }
+
+    @AllArgsConstructor
+    @Getter
+    public static class PostWriteItemReqBody {
+        @NotBlank
+        public String title;
+        @NotBlank
+        public String body;
+    }
+
+    @PostMapping
+    public Post writeItem(
+            @RequestBody @Valid PostWriteItemReqBody reqBody
+    ) {
+        return postService.write(reqBody.title, reqBody.body);
+    }
 }
