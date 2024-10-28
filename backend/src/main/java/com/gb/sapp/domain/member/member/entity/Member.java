@@ -1,6 +1,5 @@
-package com.gb.sapp.domain.post.post.entity;
+package com.gb.sapp.domain.member.member.entity;
 
-import com.gb.sapp.domain.member.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +8,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -20,7 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Post {
+public class Member {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @EqualsAndHashCode.Include
@@ -32,21 +30,14 @@ public class Post {
 
     @LastModifiedDate
     @Setter(value = AccessLevel.PRIVATE)
-
     private LocalDateTime modifyDate;
 
-    private String title;
+    @Column(unique = true)
+    private String username;
 
-    private String body;
+    private String password;
 
-    @ManyToOne(fetch = LAZY)
-    private Member author;
-
-    @Column(columnDefinition = "BOOLEAN default false")
-    private boolean published;
-
-    @Column(columnDefinition = "BOOLEAN default false")
-    private boolean listed;
+    private String nickname;
 
     public void setModified() {
         setModifyDate(LocalDateTime.now());
