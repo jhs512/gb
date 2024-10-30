@@ -3,6 +3,7 @@ package com.gb.sapp.domain.member.member.service;
 import com.gb.sapp.domain.member.member.entity.Member;
 import com.gb.sapp.domain.member.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
+    private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
 
     @Transactional
@@ -22,7 +24,7 @@ public class MemberService {
 
         Member member = Member.builder()
                 .username(username)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .nickname(nickname)
                 .build();
 
