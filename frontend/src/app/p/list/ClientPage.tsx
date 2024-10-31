@@ -1,7 +1,7 @@
 "use client";
 
-import { Page } from "@/app/types/Page";
-import { Post } from "@/app/types/Post";
+import { Page } from "@/types/page";
+import { Post } from "@/types/post";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -1,7 +1,6 @@
 "use client";
 
-import { Post } from "@/app/types/Post";
-import Link from "next/link";
+import { Post } from "@/types/post";
 import { useRouter } from "next/navigation";
 
 import { useEffect, useState } from "react";

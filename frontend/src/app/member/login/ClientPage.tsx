@@ -1,9 +1,12 @@
 "use client";
 
+import { MemberContext } from "@/stores/member";
 import { useRouter } from "next/navigation";
+import { use } from "react";
 
 export default function ClientPage() {
   const router = useRouter();
+  const { setLoginMember } = use(MemberContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,6 +31,9 @@ export default function ClientPage() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
+      setLoginMember(data.data.item);
 
       alert("로그인되었습니다.");
       router.push("/");
