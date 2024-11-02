@@ -47,6 +47,9 @@ public class Member {
     @Column(columnDefinition = "BOOLEAN default false")
     private boolean social;
 
+    @Transient
+    private Boolean _isAdmin;
+
     public void setModified() {
         setModifyDate(LocalDateTime.now());
     }
@@ -61,7 +64,12 @@ public class Member {
     }
 
     private boolean isAdmin() {
-        return "admin".equals(username) || "system".equals(username);
+        if (this._isAdmin != null)
+            return this._isAdmin;
+
+        this._isAdmin = List.of("system", "admin").contains(getUsername());
+
+        return this._isAdmin;
     }
 
     public String getName() {
@@ -70,5 +78,9 @@ public class Member {
 
     public String getProfileImgUrlOrDefault() {
         return "https://placehold.co/640x640?text=O_O";
+    }
+
+    public void setAdmin(boolean admin) {
+        this._isAdmin = admin;
     }
 }

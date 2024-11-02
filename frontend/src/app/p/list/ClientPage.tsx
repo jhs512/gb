@@ -91,6 +91,7 @@ export function Pagination({
 }: PaginationProps) {
   const createPageLink = (pageNum: number, label?: string) => (
     <Link
+      key={pageNum}
       href={`/p/list?page=${pageNum}&kwType=${kwType}&kw=${kw}`}
       className={`px-3 py-1 border rounded ${
         currentPage === pageNum ? "bg-blue-500 text-white" : "hover:bg-gray-50"

@@ -1,5 +1,6 @@
 package com.gb.sapp.global.webMvc;
 
+import com.gb.sapp.global.app.AppConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,7 +13,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
                 .allowedOrigins(
                         "https://cdpn.io",
-                        "http://localhost:3000"
+                        AppConfig.getSiteFrontUrl()
                 )
                 .allowedMethods("*")
                 .allowedHeaders("*")
