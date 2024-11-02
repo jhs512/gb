@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import ClientPage from "./ClientPage";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {};
 
@@ -15,6 +16,10 @@ export default async function Page({ params }: { params: { id: string } }) {
       Cookie: (await cookies()).toString(),
     },
   });
+
+  if (!response.ok) {
+    return <div>권한이 없습니다.</div>;
+  }
 
   const post = await response.json();
 

@@ -5,6 +5,7 @@ import com.gb.sapp.domain.member.member.service.MemberService;
 import com.gb.sapp.domain.post.post.entity.Post;
 import com.gb.sapp.domain.post.post.service.PostService;
 import com.gb.sapp.global.app.AppConfig;
+import com.gb.sapp.global.rq.Rq;
 import com.gb.sapp.standard.base.KwTypeV1;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -27,6 +28,7 @@ import java.util.List;
 public class ApiV1PostController {
     private final PostService postService;
     private final MemberService memberService;
+    private final Rq rq;
 
     @GetMapping
     public Page<Post> getItems(
@@ -46,6 +48,12 @@ public class ApiV1PostController {
     public Post getItem(
             @PathVariable long id
     ) {
+        Member actor = rq.getMember();
+
+        Post post = postService.findById(id).get();
+
+        postService.checkCanRead(actor, post);
+
         return postService.findById(id).get();
     }
 
@@ -53,7 +61,13 @@ public class ApiV1PostController {
     public void deleteItem(
             @PathVariable long id
     ) {
-        postService.deleteById(id);
+        Member actor = rq.getMember();
+
+        Post post = postService.findById(id).get();
+
+        postService.checkCanDelete(actor, post);
+
+        postService.delete(post);
     }
 
     @AllArgsConstructor
@@ -70,7 +84,11 @@ public class ApiV1PostController {
             @PathVariable long id,
             @RequestBody @Valid PostModifyItemReqBody reqBody
     ) {
+        Member actor = rq.getMember();
+
         Post post = postService.findById(id).get();
+
+        postService.checkCanModify(actor, post);
 
         postService.modify(post, reqBody.title, reqBody.body);
 

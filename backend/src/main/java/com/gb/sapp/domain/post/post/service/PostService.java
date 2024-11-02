@@ -3,6 +3,7 @@ package com.gb.sapp.domain.post.post.service;
 import com.gb.sapp.domain.member.member.entity.Member;
 import com.gb.sapp.domain.post.post.entity.Post;
 import com.gb.sapp.domain.post.post.repository.PostRepository;
+import com.gb.sapp.global.exceptions.GlobalException;
 import com.gb.sapp.standard.base.KwTypeV1;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +61,39 @@ public class PostService {
 
     public Page<Post> findByKw(KwTypeV1 kwType, String kw, Member author, Boolean published, Boolean listed, Pageable pageable) {
         return postRepository.findByKw(kwType, kw, author, published, listed, pageable);
+    }
+
+    public void checkCanRead(Member actor, Post post) {
+        if (!canRead(actor, post)) {
+            throw new GlobalException("403-1", "권한이 없습니다.");
+        }
+    }
+
+    public boolean canRead(Member actor, Post post) {
+        if (post == null) return false;
+        if (actor == null) return post.isPublished();
+
+        return actor.equals(post.getAuthor()) || post.isPublished();
+    }
+
+    public void checkCanDelete(Member actor, Post post) {
+        if (!canDelete(actor, post)) throw new GlobalException("403-1", "권한이 없습니다.");
+    }
+
+    public boolean canDelete(Member actor, Post post) {
+        return actor.equals(post.getAuthor());
+    }
+
+    public void checkCanModify(Member actor, Post post) {
+        if (!canModify(actor, post)) throw new GlobalException("403-1", "권한이 없습니다.");
+    }
+
+    public boolean canModify(Member actor, Post post) {
+        return actor.equals(post.getAuthor());
+    }
+
+    @Transactional
+    public void delete(Post post) {
+        postRepository.delete(post);
     }
 }
