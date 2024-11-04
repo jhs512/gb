@@ -42,7 +42,7 @@ export default function ClientPage({ id }: { id: string }) {
       headers: {
         "Content-Type": "application/json",
       },
-    });
+    }).then((data) => data.json());
 
     alert("수정되었습니다.");
 
