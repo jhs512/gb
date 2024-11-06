@@ -81,6 +81,9 @@ public class PostService {
     }
 
     public boolean canDelete(Member actor, Post post) {
+        if (post == null) return false;
+        if (actor == null) return post.isPublished();
+
         return actor.equals(post.getAuthor());
     }
 
@@ -89,6 +92,9 @@ public class PostService {
     }
 
     public boolean canModify(Member actor, Post post) {
+        if (post == null) return false;
+        if (actor == null) return post.isPublished();
+
         return actor.equals(post.getAuthor());
     }
 
